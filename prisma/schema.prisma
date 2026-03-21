@@ -6,15 +6,20 @@ datasource db {
   provider = "postgresql"
 }
 
+// schema related to user and it's account detail
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  emailVerified DateTime?
   image         String?
+  coins         Float     @default(10000)
   createdAt     DateTime  @default(now())
-  accounts      Account[]
-  sessions      Session[]
+  emailVerified DateTime?
+
+  accounts    Account[]
+  sessions    Session[]
+  portfolio   Portfolio[]
+  transaction Transaction[]
 }
 
 model Account {
@@ -23,13 +28,13 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  access_token      String?
+  refresh_token     String?
   expires_at        Int?
-  token_type        String?
+  id_token          String?
   scope             String?
-  id_token          String? @db.Text
   session_state     String?
+  token_type        String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
@@ -49,4 +54,46 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// schema for stocks 
+model Stock {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  currentPrice Float
+  valatility   Float
+  createdAt    DateTime       @default(now())
+  history      PriceHistory[]
+  portfolios   Portfolio[]
+}
+
+model PriceHistory {
+  id        Int      @id @default(autoincrement())
+  stockId   Int
+  price     Float
+  timestamp DateTime @default(now())
+  stock     Stock    @relation(fields: [stockId], references: [id])
+}
+
+model Portfolio {
+  id       Int    @id @default(autoincrement())
+  userId   String
+  stockId  Int
+  quantity Int    @default(0)
+  user     User   @relation(fields: [userId], references: [id])
+  stock    Stock  @relation(fields: [stockId], references: [id])
+
+  @@unique([userId, stockId])
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  stockId   Int
+  type      String // "BUY" or "SELL"
+  quantity  Int
+  price     Float // price at the time of trade
+  total     Float
+  timestamp DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
