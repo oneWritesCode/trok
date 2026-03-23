@@ -6,20 +6,18 @@ datasource db {
   provider = "postgresql"
 }
 
-// schema related to user and it's account detail
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   image         String?
-  coins         Float     @default(10000)
-  createdAt     DateTime  @default(now())
+  createdAt     DateTime      @default(now())
   emailVerified DateTime?
-
-  accounts    Account[]
-  sessions    Session[]
-  portfolio   Portfolio[]
-  transaction Transaction[]
+  coins         Float         @default(10000)
+  accounts      Account[]
+  portfolio     Portfolio[]
+  sessions      Session[]
+  transaction   Transaction[]
 }
 
 model Account {
@@ -56,15 +54,14 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// schema for stocks 
 model Stock {
   id           Int            @id @default(autoincrement())
   name         String         @unique
   currentPrice Float
   valatility   Float
   createdAt    DateTime       @default(now())
-  history      PriceHistory[]
   portfolios   Portfolio[]
+  history      PriceHistory[]
 }
 
 model PriceHistory {
@@ -80,8 +77,8 @@ model Portfolio {
   userId   String
   stockId  Int
   quantity Int    @default(0)
-  user     User   @relation(fields: [userId], references: [id])
   stock    Stock  @relation(fields: [stockId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
 
   @@unique([userId, stockId])
 }
@@ -90,9 +87,9 @@ model Transaction {
   id        Int      @id @default(autoincrement())
   userId    String
   stockId   Int
-  type      String // "BUY" or "SELL"
+  type      String
   quantity  Int
-  price     Float // price at the time of trade
+  price     Float
   total     Float
   timestamp DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
