@@ -57,8 +57,9 @@ model VerificationToken {
 model Stock {
   id           Int            @id @default(autoincrement())
   name         String         @unique
+  description  String
   currentPrice Float
-  valatility   Float
+  volatility   Float
   createdAt    DateTime       @default(now())
   portfolios   Portfolio[]
   history      PriceHistory[]

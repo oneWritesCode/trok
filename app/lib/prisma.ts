@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
   ssl: true,
+  connectionTimeoutMillis: 30000, 
 });
 
 const globalForPrisma = globalThis as unknown as {

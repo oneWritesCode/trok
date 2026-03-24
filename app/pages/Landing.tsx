@@ -26,7 +26,7 @@ export default function Landing() {
             {isSettignOptionsOpen && (
               <div className="min-w-[10rem] absolute left-[80%] top-[80%] p-1 border border-gray-400 rounded-md">
                 <p className="uppercase text-sm text-center font-bold">
-                  {session?.user?.email ?? "user"}
+                  {session?.user?.name ?? "user"}
                 </p>
                 <button onClick={() => signOut()}>Logout</button>
               </div>
