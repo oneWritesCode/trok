@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 import whiteNboldOne from "@/public/images/whiteNboldOne.png";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Landing() {
   const { data: session } = useSession();
@@ -34,7 +35,31 @@ export default function Landing() {
           </div>
         </div>
         {/* section */}
-        <div></div>
+        <div className="mt-20 px-8">
+          <div className="flex flex-col items-center text-center space-y-8">
+            <h2 className="text-6xl font-black uppercase tracking-tighter">
+              Trade the World
+            </h2>
+            <p className="text-neutral-500 max-w-lg text-lg">
+              The simplest way to trade stocks, crypto, and more.
+              Experience the future of exchange today.
+            </p>
+            <div className="flex gap-4">
+              <Link 
+                href="/stocks"
+                className="bg-black text-white px-10 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform"
+              >
+                Go to Market
+              </Link>
+              <Link 
+                href="/stocks/add"
+                className="border-2 border-black text-black px-10 py-4 rounded-full font-bold text-lg hover:bg-black hover:text-white transition-all"
+              >
+                Add Stock
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
